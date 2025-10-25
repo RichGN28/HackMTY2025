@@ -2,6 +2,7 @@ body {
   background-color: #3b959e;
   margin-top: 80px;
 }
+
 .barra-superior {
   position: fixed;
   top: 0;
@@ -9,8 +10,25 @@ body {
   width: 100%;
   height: 80px;
   background-color: #23272f; 
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15); 
-  z-index: 1000;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25); /* Sombra más grande */
+  z-index: 1100; /* Mayor que el wish */
 }
+
+.objeto-wish {
+  position: fixed;
+  top: 100px; /* Suficiente espacio para no chocar (80px de barra + 20px de separación) */
+  left: 20px;
+  right: 20px;
+  min-width: 0;
+  min-height: 90px;
+  background: #3a3f47; /* Tono más claro que #23272f pero de la misma familia */
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.17);
+  z-index: 1000; /* Menor que la barra */
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+}
+
 
 
