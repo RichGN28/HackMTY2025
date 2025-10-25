@@ -1,6 +1,7 @@
 body {
   background-color: #3b959e;
-  margin-top: 80px;
+  margin: 0;
+  padding: 0;
 }
 
 .barra-superior {
@@ -10,24 +11,77 @@ body {
   width: 100%;
   height: 80px;
   background-color: #23272f; 
-  box-shadow: 0 6px 20px rgba(0,0,0,0.25); /* Sombra más grande */
-  z-index: 1100; /* Mayor que el wish */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  z-index: 1100;
 }
 
 .objeto-wish {
   position: fixed;
-  top: 100px; /* Suficiente espacio para no chocar (80px de barra + 20px de separación) */
+  top: 100px;
   left: 20px;
   right: 20px;
   min-width: 0;
-  min-height: 90px;
-  background: #3a3f47; /* Tono más claro que #23272f pero de la misma familia */
+  min-height: 50px;
+  background: #3a3f47;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.17);
-  z-index: 1000; /* Menor que la barra */
+  z-index: 1000;
   padding: 16px 24px;
   display: flex;
   align-items: center;
+}
+
+.meta-descripcion {
+  margin-top: 200px;
+  padding: 0 20px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.meta-descripcion p {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #2b3440;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 24px 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin: 0;
+}
+
+.btn-salgo {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #2ecc71;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+  transition: all 0.3s ease;
+  z-index: 1200;
+}
+
+.btn-salgo:hover {
+  background-color: #27ae60;
+  box-shadow: 0 6px 16px rgba(46, 204, 113, 0.4);
+  transform: translateY(-3px);
+}
+
+/* Responsive: se adapta en pantallas pequeñas */
+@media only screen and (max-width: 600px) {
+  .btn-salgo {
+    font-size: 14px;
+    padding: 12px 20px;
+    bottom: 20px;
+    right: 20px;
+  }
 }
 
 
