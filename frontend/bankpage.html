@@ -1,15 +1,439 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Wishes!</title>
-    <link rel="stylesheet" href="style_bankpage.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wishes!</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 10px;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #064e3b, #0f766e, #000);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(25px);
+  border-radius: 30px;
+  padding: 30px 20px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  transform: translateY(50px);
+  opacity: 0;
+  animation: fadeUp 0.8s forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+h1 {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  margin: 10px 0;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: clamp(1.2rem, 4vw, 1.5rem);
+  margin: 10px 0;
+  font-weight: 600;
+}
+
+p {
+  margin: 8px 0;
+  color: #d1d5db;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  margin: 8px auto;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 200px;
+}
+
+.btn-green {
+  background: linear-gradient(90deg, #10b981, #059669);
+  color: white;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+}
+
+.btn-green:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px rgba(16, 185, 129, 0.5);
+}
+
+.btn-gray {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-gray:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.hidden {
+  display: none;
+}
+
+.finger-icon {
+  font-size: clamp(2rem, 8vw, 3rem);
+  margin-bottom: 20px;
+  animation: pulse 1.2s infinite;
+}
+
+.logo-image {
+  width: clamp(60px, 15vw, 120px);
+  height: auto;
+  margin-bottom: 20px;
+  animation: pulse 1.2s infinite;
+  border-radius: 15px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.saldo {
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
+  font-weight: 800;
+  margin: 10px 0;
+  word-break: break-word;
+}
+
+.barra-progreso {
+  height: 15px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  margin: 15px 0;
+  overflow: hidden;
+}
+
+.barra-llenado {
+  height: 100%;
+  background: #10b981;
+  width: 50%;
+  transition: width 0.6s ease;
+}
+
+.movimientos {
+  margin-top: 20px;
+  text-align: left;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.movimiento {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+}
+
+.movimiento.positivo {
+  color: #6ee7b7;
+}
+
+.movimiento.negativo {
+  color: #fca5a5;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  text-align: center;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+input[type="number"]:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+input[type="number"]::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button-group .btn {
+  flex: 1;
+  min-width: 120px;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 20px 15px;
+    border-radius: 20px;
+  }
+
+  h1 {
+    margin: 5px 0;
+  }
+
+  h2 {
+    margin: 5px 0;
+  }
+
+  p {
+    margin: 5px 0;
+  }
+
+  .btn {
+    padding: 10px 15px;
+    margin: 5px auto;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group .btn {
+    width: 100%;
+  }
+
+  .movimientos {
+    max-height: 200px;
+  }
+}
+
+@media (max-width: 360px) {
+  .card {
+    padding: 15px 10px;
+  }
+
+  .finger-icon {
+    margin-bottom: 10px;
+  }
+
+  .btn {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+}
+</style>
 </head>
 <body>
+
+<!-- Pantalla de inicio -->
+<div id="inicio" class="card hidden">
+  <img src="logo_wishes.jpg" alt="Wishes Logo" class="logo-image">
+  <h1>Minted Bank</h1>
+  <p>Ingresa tu saldo inicial</p>
+  <div class="input-container">
+    <input type="number" id="saldoInicial" placeholder="MXN" min="0">
+    <button class="btn btn-green" onclick="iniciar()">✔️ Empezar</button>
+  </div>
+  <p id="mensaje"></p>
+</div>
+
+<!-- Pantalla principal -->
+<div id="app" class="card">
+  <h2>¡Bienvenido! 👋</h2>
+  <div class="saldo" id="saldo"></div>
+
+  <div class="barra-progreso">
+    <div class="barra-llenado" id="barra"></div>
+  </div>
+
+  <div class="input-container">
+    <input type="number" id="monto" placeholder="MXN" min="1">
+    <div class="button-group">
+      <button class="btn btn-green" onclick="depositar()">💰 Depositar</button>
+      <button class="btn btn-gray" onclick="retirar()">📤 Retirar</button>
+    </div>
+  </div>
+
+  <div class="movimientos" id="movimientos"></div>
+</div>
+
+<script>
+let saldo = 0;
+const USER_ID = 38; // ID del usuario en la BD
+const API_URL = 'http://localhost:5000';
+
+// Inicializar automáticamente con saldo de la BD
+document.addEventListener('DOMContentLoaded', function() {
+  cargarSaldoDeBD();
+});
+
+async function cargarSaldoDeBD(){
+  try {
+    const response = await fetch(`${API_URL}/api/saldo/${USER_ID}`);
+    const result = await response.json();
+    
+    if(response.ok) {
+      saldo = result.saldo;
+      console.log('Saldo cargado de la BD:', saldo);
+    } else {
+      console.warn('No se pudo cargar saldo de BD, usando 0');
+      saldo = 0;
+    }
+  } catch(error) {
+    console.error('Error al cargar saldo:', error);
+    saldo = 0;
+  }
+  
+  actualizarSaldo();
+}
+
+function iniciar(){
+  const val = parseFloat(document.getElementById('saldoInicial').value);
+  if(isNaN(val)||val<0){alert('Ingresa un valor válido'); return;}
+  saldo=val;
+  document.getElementById('inicio').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  actualizarSaldo();
+}
+
+function actualizarSaldo(){
+  document.getElementById('saldo').textContent = `$${saldo.toLocaleString()} MXN`;
+  const porcentaje = Math.min((saldo/50000)*100,100);
+  document.getElementById('barra').style.width = porcentaje+'%';
+}
+
+function agregarMovimiento(tipo, cantidad){
+  const cont = document.getElementById('movimientos');
+  const div = document.createElement('div');
+  div.className = 'movimiento ' + (tipo==='deposito'?'positivo':'negativo');
+  div.innerHTML = (tipo==='deposito'?`Depósito +$${cantidad}`:`Retiro -$${cantidad}`);
+  cont.prepend(div);
+}
+
+async function depositar(){
+  const val = parseFloat(document.getElementById('monto').value);
+  if(isNaN(val)||val<=0){alert('Ingresa un valor válido'); return;}
+  
+  try {
+    const response = await fetch(`${API_URL}/api/deposito`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: USER_ID,
+        cantidad: val
+      })
+    });
+    
+    const result = await response.json();
+    
+    if(response.ok) {
+      saldo = result.nuevo_saldo;
+      actualizarSaldo();
+      agregarMovimiento('deposito', val);
+      document.getElementById('monto').value='';
+      console.log('Depósito exitoso:', result);
+    } else {
+      alert('Error: ' + result.message);
+    }
+  } catch(error) {
+    console.error('Error en depósito:', error);
+    // Si falla la conexión, actualizar localmente
+    saldo += val;
+    actualizarSaldo();
+    agregarMovimiento('deposito', val);
+    document.getElementById('monto').value='';
+    alert('Depósito registrado localmente (sin conexión BD)');
+  }
+}
+
+async function retirar(){
+  const val = parseFloat(document.getElementById('monto').value);
+  if(isNaN(val)||val<=0){alert('Ingresa un valor válido'); return;}
+  
+  try {
+    const response = await fetch(`${API_URL}/api/retiro`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: USER_ID,
+        cantidad: val
+      })
+    });
+    
+    const result = await response.json();
+    
+    if(response.ok) {
+      saldo = result.nuevo_saldo;
+      actualizarSaldo();
+      agregarMovimiento('retiro', val);
+      document.getElementById('monto').value='';
+      console.log('Retiro exitoso:', result);
+    } else {
+      alert('Error: ' + result.message);
+    }
+  } catch(error) {
+    console.error('Error en retiro:', error);
+    // Si falla la conexión, actualizar localmente
+    if(val > saldo) {
+      alert('No tienes suficiente saldo');
+      return;
+    }
+    saldo -= val;
+    actualizarSaldo();
+    agregarMovimiento('retiro', val);
+    document.getElementById('monto').value='';
+    alert('Retiro registrado localmente (sin conexión BD)');
+  }
+}
+</script>
 
 </body>
 </html>
