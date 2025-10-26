@@ -1,26 +1,41 @@
 class WishesApp {
     constructor() {
         // Variables globales
-        this.ahorro = 1250.00; // Cantidad de ahorro inicial
-        this.wishes = []; // Array para almacenar los deseos
+        this.ahorro = 1250.00;
+        this.wishes = [];
+        this.chart = null;
+        this.viewMode = 'mes'; // 'mes' o 'dia'
+        
+        // Datos para la gráfica (puedes modificarlos)
+        this.datosIdeal = {
+            mes: [100, 200, 300, 400, 500, 600],
+            dia: [10, 20, 35, 45, 60, 70, 85, 95, 110, 125, 140, 155, 170, 185, 200]
+        };
+        
+        this.datosReal = {
+            mes: [80, 180, 250, 350, 420, 500],
+            dia: [8, 18, 30, 40, 55, 65, 75, 88, 100, 115, 130, 142, 158, 175, 190]
+        };
         
         // Referencias DOM
         this.ahorroTotalEl = document.getElementById('ahorroTotal');
         this.wishesListEl = document.getElementById('wishesList');
         this.totalWishesEl = document.getElementById('totalWishes');
         this.btnAgregarWish = document.getElementById('btnAgregarWish');
+        this.objetosListEl = document.getElementById('objetosList');
         
         // Modal
         this.btnAbrirModal = document.getElementById('abrirModal');
         this.btnCerrarModal = document.getElementById('cerrarModal');
         this.modalOverlay = document.querySelector('.modal-overlay');
         this.modalSaldo = document.getElementById('modalSaldo');
+        this.btnToggleView = document.getElementById('btnToggleView');
+        this.viewLabel = document.getElementById('viewLabel');
         
         this.init();
     }
     
     init() {
-        // Actualizar cantidad de ahorro
         this.actualizarAhorro();
         
         // Event listeners
@@ -28,19 +43,18 @@ class WishesApp {
         this.btnAbrirModal.addEventListener('click', (e) => this.abrirModal(e));
         this.btnCerrarModal.addEventListener('click', () => this.cerrarModal());
         this.modalOverlay.addEventListener('click', () => this.cerrarModal());
+        this.btnToggleView.addEventListener('click', () => this.toggleView());
         
-        // Agregar algunos deseos de ejemplo
-        this.agregarWishEjemplo('iPhone 15 Pro', 'Color negro 256GB', 999.99);
-        this.agregarWishEjemplo('MacBook Air', 'M2, 13 pulgadas', 1199.00);
-        this.agregarWishEjemplo('AirPods Pro', 'Segunda generación', 249.00);
+        // Agregar deseos de ejemplo
+        this.agregarWishEjemplo('iPhone 15 Pro', 'Color negro 256GB', 999.99, 500);
+        this.agregarWishEjemplo('MacBook Air', 'M2, 13 pulgadas', 1199.00, 850);
+        this.agregarWishEjemplo('AirPods Pro', 'Segunda generación', 249.00, 200);
     }
     
-    // Actualizar cantidad de ahorro en la barra superior
     actualizarAhorro() {
         this.ahorroTotalEl.textContent = this.formatoMoneda(this.ahorro);
     }
     
-    // Agregar un nuevo deseo (con prompt)
     agregarWish() {
         const nombre = prompt('Nombre del deseo:');
         if (!nombre) return;
@@ -54,16 +68,19 @@ class WishesApp {
             return;
         }
         
-        this.agregarWishEjemplo(nombre, descripcion, precio);
+        const ahorradoStr = prompt('¿Cuánto has ahorrado para este deseo?') || '0';
+        const ahorrado = parseFloat(ahorradoStr);
+        
+        this.agregarWishEjemplo(nombre, descripcion, precio, ahorrado);
     }
     
-    // Agregar deseo con datos
-    agregarWishEjemplo(nombre, descripcion, precio) {
+    agregarWishEjemplo(nombre, descripcion, precio, ahorrado = 0) {
         const wish = {
             id: Date.now(),
             nombre: nombre,
             descripcion: descripcion,
-            precio: precio
+            precio: precio,
+            ahorrado: ahorrado
         };
         
         this.wishes.push(wish);
@@ -71,7 +88,6 @@ class WishesApp {
         this.actualizarTotal();
     }
     
-    // Renderizar todos los deseos
     renderizarWishes() {
         this.wishesListEl.innerHTML = '';
         
@@ -81,7 +97,6 @@ class WishesApp {
         });
     }
     
-    // Crear elemento HTML para un deseo
     crearWishElement(wish) {
         const wishDiv = document.createElement('div');
         wishDiv.className = 'wish-item';
@@ -94,40 +109,141 @@ class WishesApp {
             <button class="btn-eliminar" data-id="${wish.id}">Eliminar</button>
         `;
         
-        // Event listener para eliminar
         const btnEliminar = wishDiv.querySelector('.btn-eliminar');
         btnEliminar.addEventListener('click', () => this.eliminarWish(wish.id));
         
         return wishDiv;
     }
     
-    // Eliminar un deseo
     eliminarWish(id) {
         this.wishes = this.wishes.filter(wish => wish.id !== id);
         this.renderizarWishes();
         this.actualizarTotal();
     }
     
-    // Actualizar el total de todos los deseos
     actualizarTotal() {
         const total = this.wishes.reduce((sum, wish) => sum + wish.precio, 0);
         this.totalWishesEl.textContent = this.formatoMoneda(total);
-        
-        // También actualizar en el modal si está abierto
-        const totalWishesModal = document.getElementById('totalWishesModal');
-        const faltaAhorrar = document.getElementById('faltaAhorrar');
-        
-        if (totalWishesModal) {
-            totalWishesModal.textContent = this.formatoMoneda(total);
-        }
-        
-        if (faltaAhorrar) {
-            const falta = Math.max(0, total - this.ahorro);
-            faltaAhorrar.textContent = this.formatoMoneda(falta);
-        }
     }
     
-    // Formatear números como moneda
+    // Renderizar barras de progreso en el modal
+    renderizarBarrasObjetos() {
+        this.objetosListEl.innerHTML = '';
+        
+        this.wishes.forEach(wish => {
+            const porcentaje = Math.min((wish.ahorrado / wish.precio) * 100, 100);
+            
+            const barraDiv = document.createElement('div');
+            barraDiv.className = 'objeto-barra';
+            barraDiv.innerHTML = `
+                <div class="objeto-nombre" title="${wish.nombre}">${wish.nombre}</div>
+                <div class="barra-vertical-container">
+                    <div class="barra-vertical-fill" style="height: ${porcentaje}%"></div>
+                </div>
+                <div class="objeto-porcentaje">${porcentaje.toFixed(0)}%</div>
+            `;
+            
+            this.objetosListEl.appendChild(barraDiv);
+        });
+    }
+    
+    // Crear gráfica con Chart.js
+    crearGrafica() {
+        const ctx = document.getElementById('ahorroChart').getContext('2d');
+        
+        const labels = this.viewMode === 'mes' 
+            ? ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun']
+            : ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15'];
+        
+        const dataIdeal = this.viewMode === 'mes' ? this.datosIdeal.mes : this.datosIdeal.dia;
+        const dataReal = this.viewMode === 'mes' ? this.datosReal.mes : this.datosReal.dia;
+        
+        if (this.chart) {
+            this.chart.destroy();
+        }
+        
+        this.chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Ideal',
+                        data: dataIdeal,
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#2ecc71'
+                    },
+                    {
+                        label: 'Real',
+                        data: dataReal,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#3498db'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            },
+                            usePointStyle: true
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Ahorro ($)',
+                            font: {
+                                size: 13,
+                                weight: 'bold'
+                            }
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value;
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: this.viewMode === 'mes' ? 'Meses' : 'Días',
+                            font: {
+                                size: 13,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Cambiar entre vista de meses y días
+    toggleView() {
+        this.viewMode = this.viewMode === 'mes' ? 'dia' : 'mes';
+        this.viewLabel.textContent = this.viewMode === 'mes' ? 'Mes' : 'Día';
+        this.crearGrafica();
+    }
+    
     formatoMoneda(cantidad) {
         return new Intl.NumberFormat('es-MX', {
             style: 'currency',
@@ -135,17 +251,13 @@ class WishesApp {
         }).format(cantidad);
     }
     
-    // Abrir modal
     abrirModal(e) {
         e.preventDefault();
         this.modalSaldo.className = 'modal-saldo-activo';
-        
-        // Actualizar valores en el modal
-        document.getElementById('saldoActual').textContent = this.formatoMoneda(this.ahorro);
-        this.actualizarTotal();
+        this.renderizarBarrasObjetos();
+        this.crearGrafica();
     }
     
-    // Cerrar modal
     cerrarModal() {
         this.modalSaldo.className = 'modal-saldo-oculto';
     }

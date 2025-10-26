@@ -37,31 +37,40 @@
     <!-- Botón de saldo flotante -->
     <a href="#" class="btn-saldo" id="abrirModal">Saldo</a>
 
-    <!-- Modal de saldo -->
+    <!-- Modal de saldo ACTUALIZADO -->
     <div id="modalSaldo" class="modal-saldo-oculto">
         <div class="modal-overlay"></div>
         <div class="modal-contenedor">
             <button class="modal-cerrar" id="cerrarModal">&times;</button>
+            
             <div class="modal-header">
-                <h2>Saldo disponible</h2>
+                <h2>Progreso de Ahorro</h2>
             </div>
+            
             <div class="modal-body">
-                <div class="modal-row">
-                    <span class="modal-label">Tu saldo actual:</span>
-                    <span class="modal-valor" id="saldoActual">$1,250.00</span>
+                <!-- Sección de barras de progreso por objeto -->
+                <div class="objetos-section">
+                    <h3>Mis Objetos</h3>
+                    <div class="objetos-list" id="objetosList">
+                        <!-- Las barras de progreso se generan aquí -->
+                    </div>
                 </div>
-                <div class="modal-row">
-                    <span class="modal-label">Total de deseos:</span>
-                    <span class="modal-valor" id="totalWishesModal">$0.00</span>
-                </div>
-                <div class="modal-row">
-                    <span class="modal-label">Te falta ahorrar:</span>
-                    <span class="modal-valor" id="faltaAhorrar">$0.00</span>
+                
+                <!-- Sección de gráfica -->
+                <div class="grafica-section">
+                    <div class="grafica-header">
+                        <h3>Ahorro en el Tiempo</h3>
+                        <button class="btn-toggle-view" id="btnToggleView">
+                            <span id="viewLabel">Mes</span>
+                        </button>
+                    </div>
+                    <canvas id="ahorroChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="homepage-script.js"></script>
 </body>
 </html>
