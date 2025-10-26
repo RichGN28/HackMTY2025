@@ -1,7 +1,7 @@
 # supabase_client.py
 import os
-from supabase import create_client, Client
-from dotenv import load_dotenv
+from supabase import create_client, Client # type: ignore
+from dotenv import load_dotenv # type: ignore
 from typing import List, Optional, Dict, Any
 
 load_dotenv()
@@ -14,7 +14,7 @@ class WishManager:
     
     # ===== OPERACIONES PARA WISHES =====
    
-    def create_wish(self, user_id: int, name: str, description: str, money_goal: float, percentage: float) -> Dict[str, Any]:
+    def create_wish(self, user_id: int, name: str, description: str, money_goal: float, percentage: float, plazo: str) -> Dict[str, Any]:
         # Crear el nuevo deseo
         new_wish = {
             "user_id": user_id,
@@ -22,7 +22,8 @@ class WishManager:
             "description": description,
             "money_goal": money_goal,
             "percentage": percentage,
-            "current_money": 0.0
+            "current_money": 0.0,
+            "plazo": plazo
         }
         response = self.client.table("Wishes").insert(new_wish).execute()
         created_wish = response.data[0] if response.data else None
