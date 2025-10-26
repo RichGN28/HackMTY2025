@@ -15,20 +15,6 @@ class WishManager:
     # ===== OPERACIONES PARA WISHES =====
    
     def create_wish(self, user_id: int, name: str, description: str, money_goal: float, percentage: float) -> Dict[str, Any]:
-        # checar si existen wishes previos
-        # si no existen asignar el 100% al nuevo wish
-        if (not self.get_wishes_by_user(user_id)):
-            percentage = 1.0
-
-        # conseguir wishes del usuario
-        wishes = self.get_wishes_by_user(user_id)
-        # calcular cuanto distribuir entre los otros wishes
-        distribute = 1 - percentage
-        # actualizar cada wish en un loop
-        for wish in wishes:
-            adjusted_percentage = wish["percentage"] * distribute
-            self.update_wish(wish["id"], {"percentage": adjusted_percentage})
-
         # Crear el nuevo deseo
         new_wish = {
             "user_id": user_id,
@@ -39,7 +25,22 @@ class WishManager:
             "current_money": 0.0
         }
         response = self.client.table("Wishes").insert(new_wish).execute()
-        return response.data[0] if response.data else None
+        created_wish = response.data[0] if response.data else None
+        
+        if created_wish:
+            # Conseguir wishes del usuario
+            wishes = self.get_wishes_by_user(user_id)
+            # Calcular cuánto distribuir entre los otros wishes
+            distribute = 1 - percentage
+            total_percentage = sum(wish["percentage"] for wish in wishes if wish["id"] != created_wish["id"])
+            
+            # Actualizar cada wish en un loop
+            for wish in wishes:
+                if wish["id"] != created_wish["id"]:
+                    adjusted_percentage = (wish["percentage"] / total_percentage) * distribute
+                    self.update_wish(wish["id"], {"percentage": adjusted_percentage})
+
+        return created_wish
 
     def get_wishes_by_user(self, user_id: int) -> List[Dict[str, Any]]:
         """Obtener todos los deseos de un usuario"""
@@ -56,18 +57,20 @@ class WishManager:
         response = self.client.table("Wishes").select("*").eq("id", wish_id).execute()
         return response.data[0] if response.data else None
     
-
     def update_wish_percentage(self, user_id: int, wish_id: int, new_percentage: float) -> Dict[str, Any]:
-        # conseguir wishes del usuario
+        # Conseguir wishes del usuario
         wishes = self.get_wishes_by_user(user_id)
-        # Calcular cuando distribuir entre los otros wishes
+        # Calcular cuánto distribuir entre los otros wishes
         distribute = 1 - new_percentage
-        # actualizar cada wish en un loop
+        total_percentage = sum(wish["percentage"] for wish in wishes if wish["id"] != wish_id)
+        
+        # Actualizar cada wish en un loop
         for wish in wishes:
             if wish["id"] != wish_id:
-                adjusted_percentage = wishes[wish_id]["percentage"] * distribute
+                adjusted_percentage = (wish["percentage"] / total_percentage) * distribute
                 self.update_wish(wish["id"], {"percentage": adjusted_percentage})
-        # finalmente actualizar el wish objetivo
+        
+        # Finalmente actualizar el wish objetivo
         return self.update_wish(wish_id, {"percentage": new_percentage})
     
     def delete_wish(self, wish_id: int) -> bool:
