@@ -39,7 +39,8 @@ class WishManager:
                 if wish["id"] != created_wish["id"]:
                     adjusted_percentage = (wish["percentage"] / total_percentage) * distribute
                     self.update_wish(wish["id"], {"percentage": adjusted_percentage})
-
+        # actualizar current_money de todos los wishes del usuario
+        self.update_all_wishes_current_money(user_id)
         return created_wish
 
     def get_wishes_by_user(self, user_id: int) -> List[Dict[str, Any]]:
@@ -71,6 +72,7 @@ class WishManager:
                 self.update_wish(wish["id"], {"percentage": adjusted_percentage})
         
         # Finalmente actualizar el wish objetivo
+        self.update_all_wishes_current_money(user_id)
         return self.update_wish(wish_id, {"percentage": new_percentage})
     
     def delete_wish(self, wish_id: int) -> bool:
@@ -88,6 +90,25 @@ class WishManager:
         return response.data
     
     # ===== OPERACIONES PARA USERS =====
+
+    def update_all_wishes_current_money(self, user_id: int) -> List[Dict[str, Any]]:
+        # Obtener el saldo del usuario
+        user = self.get_user_by_id(user_id)  # Asegúrate de tener esta función implementada
+        user_balance = user["money"]
+
+        # Obtener todos los deseos del usuario
+        wishes = self.get_wishes_by_user(user_id)  # Asegúrate de tener esta función implementada
+
+        updated_wishes = []
+
+        # Actualizar el current_money de cada deseo
+        for wish in wishes:
+            wish_percentage = wish["percentage"]
+            current_money = user_balance * wish_percentage  # Calcular el nuevo current_money
+            updated_wish = self.update_wish(wish["id"], {"current_money": current_money})  # Actualizar en la base de datos
+            updated_wishes.append(updated_wish)
+
+        return updated_wishes
     
     def create_user(self, username: str, password: str, money: float = 0) -> Dict[str, Any]:
         """Crear un nuevo usuario"""

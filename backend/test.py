@@ -4,18 +4,19 @@ from supabase_client import WishManager
 def main():
     db = WishManager()
     
-    # # Crear un usuario
-    # user = db.create_user("c", "password123", 1230.0)
+    # Crear un usuario
+    # user = db.create_user("d", "password123", 1230.0)
     # print(f"Usuario creado: {user['username']} con ${user['money']}")
 
+    user = db.get_user_by_username("d")
 
-    # wish1 = db.create_wish(
-    #     user_id=user["id"],
-    #     name="carro",
-    #     description="Un carro deportivo rojo",
-    #     money_goal=500.0,
-    #     percentage=0.8
-    # )
+    wish1 = db.create_wish(
+        user_id=user["id"],
+        name="sermon",
+        description="Un carro deportivo rojo",
+        money_goal=500.0,
+        percentage=0.2
+    )
 
     # wish2 = db.create_wish(
     #     user_id=user["id"],
@@ -33,15 +34,15 @@ def main():
     # )
     # print("Deseos creados exitosamente!")
     
-    userTest = db.get_user_by_username("c")
-    wishes = db.get_wishes_by_user(userTest["id"])
-    # update wish percentage
-    print("Actualizando porcentaje del primer deseo al 0.7")
-    updated_wish = db.update_wish_percentage(
-        user_id=userTest["id"],
-        wish_id=wishes[0]["id"],
-        new_percentage=0.7
-    )
+    # userTest = db.get_user_by_username("c")
+    # wishes = db.get_wishes_by_user(userTest["id"])
+    # # update wish percentage
+    # print("Actualizando porcentaje del primer deseo al 0.7")
+    # updated_wish = db.update_wish_percentage(
+    #     user_id=userTest["id"],
+    #     wish_id=wishes[0]["id"],
+    #     new_percentage=0.7
+    # )
 
 
 
