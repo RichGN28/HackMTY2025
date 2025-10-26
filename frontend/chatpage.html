@@ -16,21 +16,23 @@
         </svg>
     </a>
 
-    <div class="center-image">
+    <!-- Wishi (insecto) - ahora con clase para animación -->
+    <div class="wishi-container" id="wishiContainer">
         <img src="/frontend/images/wishichat.png" alt="wishi_central">
     </div>
 
-    <div class="response-container" id="responseContainer">
-        <div class="response-text" id="responseText"> </div>
+    <!-- Contenedor de mensajes tipo chat -->
+    <div class="chat-container" id="chatContainer">
+        <!-- Los mensajes se agregan dinámicamente aquí -->
     </div>
 
     <div class="input-container">
         <textarea rows="4" cols="25" placeholder="Cuéntale a Wishi" class="textbox" id="textbox"></textarea>
         <button class="mic-button" id="micButton"></button>
     </div>
-</body>
-<script src="button_micandsend.js"></script>
-<div id="swipeOverlay" style="display:none; position:fixed; z-index:5000; left:0; top:0; width:100vw; height:100vh; pointer-events:none; background:#fff; opacity:0; transition:opacity 0.32s cubic-bezier(.68,0,.38,1);"></div>
-<script src="swipe-navigate.js"></script>
 
+    <div id="swipeOverlay" style="display:none; position:fixed; z-index:5000; left:0; top:0; width:100vw; height:100vh; pointer-events:none; background:#000; opacity:0; transition:opacity 0.32s cubic-bezier(.68,0,.38,1);"></div>
+    <script src="swipe-navigate.js"></script>
+    <script src="button_micandsend.js"></script>
+</body>
 </html>
