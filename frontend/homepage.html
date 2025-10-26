@@ -12,6 +12,42 @@
     <div class="meta-descripcion">
         <p>Aquí puedes escribir tu texto descriptivo de manera elegante. Este espacio fluye naturalmente con el diseño de tu página.</p>
     </div>
-    <a href="#" class="btn-salgo">Saldo</a>
+    <!-- <a href="#" class="btn-saldo">Saldo</a> -->
+    <a href="#" class="btn-saldo" id="abrirModal">Saldo</a>
+
+<!-- Modal de saldo -->
+<div id="modalSaldo" class="modal-saldo-oculto">
+  <div class="modal-overlay"></div>
+  <div class="modal-contenedor">
+    <button class="modal-cerrar" id="cerrarModal">&times;</button>
+    <div class="modal-header">
+      <h2>Saldo disponible</h2>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <span class="modal-label">Tu saldo actual:</span>
+        <span class="modal-valor">$1,250.00</span>
+      </div>
+      <div class="modal-row">
+        <span class="modal-label">Última actualización:</span>
+        <span class="modal-valor">25/10/2025</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('abrirModal').onclick = function(e) {
+  e.preventDefault();
+  document.getElementById('modalSaldo').className = 'modal-saldo-activo';
+};
+document.getElementById('cerrarModal').onclick = function() {
+  document.getElementById('modalSaldo').className = 'modal-saldo-oculto';
+};
+document.querySelector('.modal-overlay').onclick = function() {
+  document.getElementById('modalSaldo').className = 'modal-saldo-oculto';
+};
+</script>
+
 </body>
 </html>
