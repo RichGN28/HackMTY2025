@@ -1,0 +1,20 @@
+[33m7765f4c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: pull origin main: Fast-forward
+[33m4a9dd19[m HEAD@{1}: checkout: moving from pacoyfab to main
+[33m7475258[m[33m ([m[1;31morigin/pacoyfab[m[33m, [m[1;32mpacoyfab[m[33m)[m HEAD@{2}: pull: Fast-forward
+[33m1f1cd32[m HEAD@{3}: pull --tags origin pacoyfab: Merge made by the 'ort' strategy.
+[33m8c963d1[m HEAD@{4}: commit: ni idea bro
+[33m3674b63[m HEAD@{5}: pull --tags origin pacoyfab: Merge made by the 'ort' strategy.
+[33mb4c89b3[m HEAD@{6}: commit: implementación de OpenRouter
+[33ma503a59[m HEAD@{7}: commit: cositas
+[33ma28aadd[m HEAD@{8}: commit: creé la carpeta images
+[33mfef0b3e[m HEAD@{9}: commit: bien
+[33m029590c[m HEAD@{10}: pull --tags origin pacoyfab: Merge made by the 'ort' strategy.
+[33m5dea4fb[m HEAD@{11}: commit: casi nada cambió
+[33m28c7dcc[m HEAD@{12}: pull --tags origin pacoyfab: Merge made by the 'ort' strategy.
+[33m732b3af[m HEAD@{13}: commit: mas cositas de chatpage
+[33m24dad80[m HEAD@{14}: commit: Pasaron cositas
+[33m5ad9cb6[m HEAD@{15}: pull: Fast-forward
+[33m1414655[m HEAD@{16}: pull: Fast-forward
+[33m29efbc5[m HEAD@{17}: pull: Fast-forward
+[33m4a9dd19[m HEAD@{18}: checkout: moving from main to pacoyfab
+[33m4a9dd19[m HEAD@{19}: clone: from https://github.com/RichGN28/HackMTY2025.git
