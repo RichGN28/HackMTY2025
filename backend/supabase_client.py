@@ -13,58 +13,62 @@ class WishManager:
         self.client: Client = create_client(self.url, self.key)
     
     # ===== OPERACIONES PARA WISHES =====
-    
-    def create_wish(self, user_id: int, name: str, description: str, 
-                    money_goal: float, current_money: float = 0, percentage: float= 0) -> Dict[str, Any]:
-        """Crear un nuevo deseo"""
-        percentage = (current_money / money_goal * 100) if money_goal > 0 else 0
-        
-        data = {
+   
+    def create_wish(self, user_id: int, name: str, description: str, money_goal: float, percentage: float) -> Dict[str, Any]:
+        # checar si existen wishes previos
+        # si no existen asignar el 100% al nuevo wish
+        if (not self.get_wishes_by_user(user_id)):
+            percentage = 1.0
+
+        # conseguir wishes del usuario
+        wishes = self.get_wishes_by_user(user_id)
+        # calcular cuanto distribuir entre los otros wishes
+        distribute = 1 - percentage
+        # actualizar cada wish en un loop
+        for wish in wishes:
+            adjusted_percentage = wish["percentage"] * distribute
+            self.update_wish(wish["id"], {"percentage": adjusted_percentage})
+
+        # Crear el nuevo deseo
+        new_wish = {
             "user_id": user_id,
             "name": name,
             "description": description,
-            "percentage": percentage,
             "money_goal": money_goal,
-            "current_money": current_money
+            "percentage": percentage,
+            "current_money": 0.0
         }
-        
-        response = self.client.table("Wishes").insert(data).execute()
+        response = self.client.table("Wishes").insert(new_wish).execute()
         return response.data[0] if response.data else None
-    
+
     def get_wishes_by_user(self, user_id: int) -> List[Dict[str, Any]]:
         """Obtener todos los deseos de un usuario"""
         response = self.client.table("Wishes").select("*").eq("user_id", user_id).execute()
         return response.data
-    
-    def get_wish_by_id(self, wish_id: int) -> Optional[Dict[str, Any]]:
-        """Obtener un deseo por ID"""
+
+    def update_wish(self, wish_id: int, updates: Dict[str, Any]) -> Dict[str, Any]:
+        """Actualizar un deseo con los datos proporcionados"""
+        response = self.client.table("Wishes").update(updates).eq("id", wish_id).execute()
+        return response.data[0] if response.data else None
+
+    def get_wish_by_id(self, wish_id: int) -> Dict[str, Any]:
+        """Obtener un deseo por su ID"""
         response = self.client.table("Wishes").select("*").eq("id", wish_id).execute()
         return response.data[0] if response.data else None
     
-    def update_wish_money(self, wish_id: int, new_money: float) -> Dict[str, Any]:
-        """Actualizar el dinero actual de un deseo y recalcular porcentaje"""
-        wish = self.get_wish_by_id(wish_id)
-        if not wish:
-            raise ValueError("Wish not found")
-        
-        percentage = (new_money / wish["money_goal"] * 100) if wish["money_goal"] > 0 else 0
-        
-        update_data = {
-            "current_money": new_money,
-            "percentage": percentage
-        }
-        
-        response = self.client.table("Wishes").update(update_data).eq("id", wish_id).execute()
-        return response.data[0] if response.data else None
-    
-    def add_money_to_wish(self, wish_id: int, amount: float) -> Dict[str, Any]:
-        """Agregar dinero a un deseo existente"""
-        wish = self.get_wish_by_id(wish_id)
-        if not wish:
-            raise ValueError("Wish not found")
-        
-        new_money = wish["current_money"] + amount
-        return self.update_wish_money(wish_id, new_money)
+
+    def update_wish_percentage(self, user_id: int, wish_id: int, new_percentage: float) -> Dict[str, Any]:
+        # conseguir wishes del usuario
+        wishes = self.get_wishes_by_user(user_id)
+        # Calcular cuando distribuir entre los otros wishes
+        distribute = 1 - new_percentage
+        # actualizar cada wish en un loop
+        for wish in wishes:
+            if wish["id"] != wish_id:
+                adjusted_percentage = wishes[wish_id]["percentage"] * distribute
+                self.update_wish(wish["id"], {"percentage": adjusted_percentage})
+        # finalmente actualizar el wish objetivo
+        return self.update_wish(wish_id, {"percentage": new_percentage})
     
     def delete_wish(self, wish_id: int) -> bool:
         """Eliminar un deseo"""
