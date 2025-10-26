@@ -101,7 +101,7 @@ body {
   position: fixed;
   left: 50%; bottom: 0;
   transform: translateX(-50%);
-  width: 100vw; max-width: 500px;
+  width: 85vw;
   height: 75vh; /* 3/4 parte de abajo */
   background: #f6f8fa;
   border-radius: 28px 28px 0 0;
