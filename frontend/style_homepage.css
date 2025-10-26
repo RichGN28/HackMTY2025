@@ -51,7 +51,7 @@ body {
   margin: 0;
 }
 
-.btn-salgo {
+.btn-saldo {
   position: fixed;
   bottom: 30px;
   right: 30px;
@@ -82,6 +82,81 @@ body {
     bottom: 20px;
     right: 20px;
   }
+}
+/* -------- MODAL DESLIZANTE DESDE ABAJO --------- */
+.modal-saldo-oculto { display: none; }
+.modal-saldo-activo { display: block; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2000; }
+
+/* Oscurecimiento y desenfoque de fondo */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(30, 32, 36, 0.45);
+  backdrop-filter: blur(6px);
+  z-index: 2100;
+}
+
+/* Nuevo contenedor modal deslizable */
+.modal-contenedor {
+  position: fixed;
+  left: 50%; bottom: 0;
+  transform: translateX(-50%);
+  width: 100vw; max-width: 500px;
+  height: 75vh; /* 3/4 parte de abajo */
+  background: #f6f8fa;
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.30);
+  z-index: 2200;
+  padding: 32px 20px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  
+  /* Animación de entrada */
+  animation: popupSlideUp .33s cubic-bezier(0.21, 1, 0.32, 1);
+}
+
+/* Animación: desliza desde abajo */
+@keyframes popupSlideUp {
+  from { transform: translateX(-50%) translateY(110%); opacity:0;}
+  to   { transform: translateX(-50%) translateY(0);   opacity:1;}
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.modal-header h2 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #23272f;
+  font-size: 1.5em;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.modal-body {
+  flex: 1; /* Ocupa lo que queda del modal */
+  overflow-y: auto;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.modal-row {
+  display: flex; flex-direction: row; justify-content: space-between; align-items: center;
+  padding: 12px 0;
+  font-size: 1.1em;
+  border-bottom: 1px solid #e0e7ef;
+}
+.modal-label { color: #2b3440; }
+.modal-valor { color: #2ecc71; font-weight: bold; }
+.modal-cerrar {
+  position: absolute; top: 18px; right: 18px;
+  background: none; border: none; font-size: 2em; color: #888;
+  cursor: pointer; z-index: 2300;
+  transition: color 0.2s;
+}
+.modal-cerrar:hover { color: #bf3333; }
+
+@media (max-width: 700px) {
+  .modal-contenedor { height: 80vh; max-width: 100vw; border-radius: 22px 22px 0 0;}
 }
 
 
