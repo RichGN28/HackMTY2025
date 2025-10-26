@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Wishes!</title>
+    <link rel="stylesheet" href="style_chatpage.css">
+</head>
+<body>
+    <a href="homepage.html" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        </svg>
+    </a>
+
+    <!-- Wishi (insecto) - ahora con clase para animación -->
+    <div class="wishi-container" id="wishiContainer">
+        <img src="/frontend/images/wishichat.png" alt="wishi_central">
+    </div>
+
+    <!-- Contenedor de mensajes tipo chat -->
+    <div class="chat-container" id="chatContainer">
+        <!-- Los mensajes se agregan dinámicamente aquí -->
+    </div>
+
+    <div class="input-container">
+        <textarea rows="4" cols="25" placeholder="Cuéntale a Wishi" class="textbox" id="textbox"></textarea>
+        <button class="mic-button" id="micButton"></button>
+    </div>
+
+    <div id="swipeOverlay" style="display:none; position:fixed; z-index:5000; left:0; top:0; width:100vw; height:100vh; pointer-events:none; background:#000; opacity:0; transition:opacity 0.32s cubic-bezier(.68,0,.38,1);"></div>
+    <script src="swipe-navigate.js"></script>
+    <script src="button_micandsend.js"></script>
+</body>
+</html>

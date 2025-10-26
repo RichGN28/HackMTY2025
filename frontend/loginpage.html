@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishes - Login</title>
+    <link rel="stylesheet" href="login-styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo-section">
+                <h1>✨ Wishes</h1>
+                <p>Inicia sesión para continuar</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="input-group">
+                    <label for="username">Nombre de usuario</label>
+                    <input type="text" id="username" name="username" placeholder="Ingresa tu usuario" required>
+                    <span class="error-msg" id="usernameError"></span>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                    <span class="error-msg" id="passwordError"></span>
+                </div>
+                
+                <button type="submit" class="btn-login" id="btnLogin">Iniciar Sesión</button>
+                
+                <div class="extra-options">
+                    <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    <a href="#" class="register-link">Crear cuenta nueva</a>
+                </div>
+            </form>
+            
+            <!-- Respuesta del sistema -->
+            <div class="user-info" id="userInfo" style="display:none;">
+                <h3>¡Bienvenido!</h3>
+                <p><strong>ID de Usuario:</strong> <span id="userId"></span></p>
+                <p><strong>Nombre de Usuario:</strong> <span id="displayUsername"></span></p>
+                <p class="success-msg">✓ Inicio de sesión exitoso</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="login-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,499 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #3b959e;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 80px;
+    min-height: 100vh;
+}
+
+/* ========== BARRA SUPERIOR ========== */
+.barra-superior {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: #23272f;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ahorro-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.ahorro-label {
+    color: #a0a0a0;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+.ahorro-cantidad {
+    color: #2ecc71;
+    font-size: 1.8em;
+    font-weight: 700;
+}
+
+/* ========== CONTENEDOR DE DESEOS ========== */
+.wishes-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px 120px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.wishes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.wishes-header h2 {
+    color: #23272f;
+    font-size: 1.6em;
+    font-weight: 700;
+}
+
+.btn-agregar {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+}
+
+.btn-agregar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(46, 204, 113, 0.4);
+}
+
+/* ========== LISTA DE DESEOS ========== */
+.wishes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.wishes-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.wishes-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.wishes-list::-webkit-scrollbar-thumb {
+    background: rgba(46, 204, 113, 0.6);
+    border-radius: 10px;
+}
+
+.wishes-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(46, 204, 113, 0.8);
+}
+
+/* ========== ITEM DE DESEO ========== */
+.wish-item {
+    background: #3a3f47;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.17);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.wish-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.wish-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.wish-nombre {
+    color: #ffffff;
+    font-size: 1.15em;
+    font-weight: 600;
+}
+
+.wish-descripcion {
+    color: #a0a0a0;
+    font-size: 0.9em;
+}
+
+.wish-precio {
+    color: #2ecc71;
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+.btn-eliminar {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+}
+
+.btn-eliminar:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+}
+
+/* ========== TOTAL DE DESEOS ========== */
+.wishes-total {
+    background: #27ae60;
+    border-radius: 12px;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    margin-top: 10px;
+}
+
+.total-label {
+    color: #ffffff;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.total-cantidad {
+    color: #ffffff;
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+/* ========== BOTÓN SALDO ========== */
+.btn-saldo {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #2ecc71;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1200;
+}
+
+.btn-saldo:hover {
+    background-color: #27ae60;
+    box-shadow: 0 6px 16px rgba(46, 204, 113, 0.4);
+    transform: translateY(-3px);
+}
+
+/* ========== MODAL ========== */
+.modal-saldo-oculto {
+    display: none;
+}
+
+.modal-saldo-activo {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2000;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(30, 32, 36, 0.45);
+    backdrop-filter: blur(6px);
+    z-index: 2100;
+}
+
+.modal-contenedor {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 85vw;
+    height: 80vh;
+    background: #f6f8fa;
+    border-radius: 28px 28px 0 0;
+    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.30);
+    z-index: 2200;
+    padding: 32px 20px 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: popupSlideUp .33s cubic-bezier(0.21, 1, 0.32, 1);
+    overflow: hidden;
+}
+
+@keyframes popupSlideUp {
+    from {
+        transform: translateX(-50%) translateY(110%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.modal-header h2 {
+    color: #23272f;
+    font-size: 1.5em;
+    margin: 0;
+    font-weight: 700;
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-right: 8px;
+}
+
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #e0e7ef;
+    border-radius: 10px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #2ecc71;
+    border-radius: 10px;
+}
+
+.modal-cerrar {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 2em;
+    color: #888;
+    cursor: pointer;
+    z-index: 2300;
+    transition: color 0.2s;
+}
+
+.modal-cerrar:hover {
+    color: #bf3333;
+}
+
+/* ========== SECCIÓN DE OBJETOS (BARRAS) ========== */
+.objetos-section {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.objetos-section h3 {
+    color: #23272f;
+    font-size: 1.2em;
+    margin-bottom: 16px;
+    font-weight: 700;
+}
+
+.objetos-list {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.objetos-list::-webkit-scrollbar {
+    height: 6px;
+}
+
+.objetos-list::-webkit-scrollbar-track {
+    background: #e0e7ef;
+    border-radius: 10px;
+}
+
+.objetos-list::-webkit-scrollbar-thumb {
+    background: #2ecc71;
+    border-radius: 10px;
+}
+
+/* ========== BARRA DE PROGRESO VERTICAL ========== */
+.objeto-barra {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 80px;
+}
+
+.objeto-nombre {
+    font-size: 0.85em;
+    color: #2b3440;
+    font-weight: 600;
+    text-align: center;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.barra-vertical-container {
+    width: 50px;
+    height: 200px;
+    background: #e0e7ef;
+    border-radius: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.barra-vertical-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(180deg, #2ecc71, #27ae60);
+    border-radius: 25px;
+    transition: height 0.5s ease;
+}
+
+.objeto-porcentaje {
+    font-size: 0.9em;
+    color: #2ecc71;
+    font-weight: 700;
+}
+
+/* ========== SECCIÓN DE GRÁFICA ========== */
+.grafica-section {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.grafica-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.grafica-header h3 {
+    color: #23272f;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+.btn-toggle-view {
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-toggle-view:hover {
+    background: #27ae60;
+    transform: scale(1.05);
+}
+
+#ahorroChart {
+    max-height: 250px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media only screen and (max-width: 600px) {
+    .btn-saldo {
+        font-size: 14px;
+        padding: 12px 20px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .wishes-container {
+        padding: 0 15px 100px 15px;
+    }
+
+    .wish-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .wish-precio {
+        margin-right: 0;
+    }
+
+    .modal-contenedor {
+        height: 85vh;
+        width: 95vw;
+        border-radius: 22px 22px 0 0;
+    }
+    
+    .barra-vertical-container {
+        height: 150px;
+    }
+}
